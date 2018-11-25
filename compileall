@@ -1,0 +1,46 @@
+#!/bin/bash
+
+echo "compiling..."
+
+echo "building keygen"
+gcc -o keygen keygen.c -std=c99
+echo "building encode server daemon"
+gcc -o otp_enc_d otp_enc_d.c -std=c99
+echo "building decode server daemon"
+gcc -o otp_dec_d otp_dec_d.c -std=c99
+echo "building encode client"
+gcc -o otp_enc otp_enc.c -std=c99
+echo "building decode client"
+gcc -o otp_dec otp_dec.c -std=c99
+
+echo "compile finished."
+
+
+# Need to develop test function
+
+#test() {
+#	echo "test"
+#	PORT1="HEY"
+#	echo "$1"
+#	PORT2="$1"
+#	echo "hey"
+#	./p4gradingscript PORT1 PORT2 > mytestresults 2>&1
+#}
+
+
+killProcs() {
+	echo "killing daemons"
+	killall -q -u $USER otp_*
+}
+
+cleanDir() {
+	echo "cleaning directory"
+	rm cipher* key*
+}
+
+backup() {
+	echo "backing up files"
+	cp * ../backups/p4backup/
+}
+
+$1 "${@:2}"
